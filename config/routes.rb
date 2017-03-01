@@ -24,4 +24,8 @@ Rails.application.routes.draw do
 
   resource :turning_test, only: [:show]
 
+
+  get 'api/pilot/:id', to: 'api_pilot#show'
+  get 'api/upgrade/:id', to: 'api_upgrade#show'
+
 end

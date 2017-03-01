@@ -3,7 +3,7 @@ module Rankers
 
     attr_reader :pilots, :number_of_tournaments, :number_of_squadrons
 
-    def initialize(ranking_configuration, ship_id: nil, pilot_id: nil, ship_combo_id: nil, upgrade_id: nil)
+    def initialize(ranking_configuration, ship_id: nil, pilot_id: nil, limit: nil, ship_combo_id: nil, upgrade_id: nil)
       start_date      = ranking_configuration[:ranking_start]
       end_date        = ranking_configuration[:ranking_end]
       tournament_type = ranking_configuration[:tournament_type]
@@ -22,6 +22,7 @@ module Rankers
       weight_query_builder = WeightQueryBuilder.new(ranking_configuration)
       attributes           = {
         id:                   'pilots.id',
+        xws:                  'pilots.xws',
         name:                 'pilots.name',
         faction:              'factions.name',
         ship_id:              'ships.id',
@@ -53,6 +54,9 @@ module Rankers
       end
       if pilot_id.present?
         pilot_relation = pilot_relation.where('pilots.id = ?', pilot_id)
+      end
+      if limit.present?
+        pilot_relation = pilot_relation.limit(limit)
       end
       if tournament_type.present?
         pilot_relation = pilot_relation.where('tournaments.tournament_type_id = ?', tournament_type)
