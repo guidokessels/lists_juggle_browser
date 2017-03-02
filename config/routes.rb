@@ -25,7 +25,13 @@ Rails.application.routes.draw do
   resource :turning_test, only: [:show]
 
 
-  get 'api/pilot/:id', to: 'api_pilot#show'
-  get 'api/upgrade/:id', to: 'api_upgrade#show'
+  namespace :api do
+    resources :faction, only: [:index] do
+      resources :ships, only: [:index], on: :member do
+        resources :pilots, only: [:index, :show], on: :member
+      end
+    end
+    resources :upgrades, only: [:index, :show]
+  end
 
 end

@@ -11,5 +11,6 @@ class Ship < ApplicationRecord
   scope :small, -> { where(size: 'small') }
   scope :large, -> { where(size: 'large') }
   scope :huge, -> { where(size: 'huge') }
+  scope :for_faction_xws, ->(xws) { joins(:factions).merge(Faction.where(xws: xws)).uniq }
 
 end
